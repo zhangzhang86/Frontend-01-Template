@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="cmn-Hans-CN">
+
+<head>
+  <meta charset="utf-8">
+  <title>Week 02 Home Work</title>
+  <script>
+  	var str = '广';
+  	var num = '0x1024';
+  	console.log('str --> ' + str);
+  	console.log('num --> ' + num);
+  	console.log('isNumber(str) --> ' + isNumber(num));
+  	console.log('isChar(str) --> ' + isChar(str));
+  	console.log('utf8Encoding(str) --> ' + utf8Encoding(str));
+
+  	function utf8Encoding(str) {
+		let list = [];
+	    var byteSize = 0;
+	    for (let index = 0; index < str.length; index++) {
+	        let code = str.charCodeAt(index);
+	        if (0x00 <= code && code <= 0x7f) {
+	           byteSize += 1;
+	           list.push(code)
+	        } else if (0x80 <= code && code <= 0x7ff) {
+	           byteSize += 2;
+	           list.push(0b11000000 | (0b00011111 & (code >> 6)));
+	           list.push(0b10000000 | (0b00111111 & code));
+	        } else if (0x800 <= code && code <= 0xffff) {
+	           byteSize += 3;
+	           list.push(0b11100000 | (0b00001111 & (code >> 12)));
+	           list.push(0b10000000 | (0b00111111 & (code >> 6)));
+	           list.push(0b10000000 | (0b00111111 & code));
+	        } else if (0x10000 <= code && code <= 0x10ffff) {
+	           byteSize += 4;
+	           list.push(0b11110000 | (0b00000111 & (code >> 18)));
+	           list.push(0b10000000 | (0b00111111 & (code >> 12)));
+	           list.push(0b10000000 | (0b00111111 & (code >> 6)));
+	           list.push(0b10000000 | (0b00111111 & code));
+	        }
+	    }
+	    for (let index = 0; index < list.length; index++) {
+	      list[index] &= 0xff;
+	    }
+	    const result = list.map((item) => item.toString(16));
+	    console.log('str.byteSize = ' + byteSize);
+	    return result
+	}
+
+	function isChar(str) {
+		if (!str) {
+			return false;
+		}
+		let reg = /(("([^"\r\n\u2028\u2029\\]|\u2028|\u2029|\\((['"\bfnrtv]|[^'"\bfnrtvdxu\r\n\u2028\u2029])|0(?!d)|x[0-9a-fA-F][0-9a-fA-F]|(u[0-9a-fA-F]{4}|u{(0[0-9a-fA-F]{5}|10[0-9a-fA-F]{4}|[0-9a-fA-F]{1,4})}))|\\(\r\n|[\r\n\u2028\u2029]))*"|'([^'\r\n\u2028\u2029\\]|\u2028|\u2029|\\((['"\bfnrtv]|[^'"\bfnrtvdxu\r\n\u2028\u2029])|0(?!d)|x[0-9a-fA-F][0-9a-fA-F]|(u[0-9a-fA-F]{4}|u{(0[0-9a-fA-F]{5}|10[0-9a-fA-F]{4}|[0-9a-fA-F]{1,4})}))|\\(\r\n|[\r\n\u2028\u2029]))*'))/;
+		return reg.test(str);
+	}
+
+	function isNumber(str) {
+		if (!str) {
+			return false;
+		}
+		let reg = /((((0|[1-9]([0-9]+)?)\.([0-9]+)?([eE][+-]?[0-9]+)?|\.[0-9]+([eE][+-]?[0-9]+)?|(0|[1-9]([0-9]+)?)([eE][+-]?[0-9]+)?)|0[bB][01]+|0[oO][0-7]+|0[xX][0-9a-fA-F]+))/
+		return reg.test(str);
+	
+	}
+  </script>
+</head>
+
+<body>
+  <div>
+  	Week 02 Home Work
+  </div>
+</body>
+
+</html>
