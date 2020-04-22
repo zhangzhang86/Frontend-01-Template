@@ -6,13 +6,17 @@
   <title>Week 02 Home Work</title>
   <script>
   	const str = '广州，加油';
-  	const num = '0x1024';
-  	const char = '\''
-  	console.log('str --> ' + str);
-  	console.log('num --> ' + num);
-  	console.log('num --> ' + char);
-  	console.log('匹配所有 Number 直接量 isNumber('+ num + ') --> ' + isNumber(num));
-  	console.log('匹配所有的字符串直接量，单引号和双引号 isChar(' + char + ') --> ' + isChar(str));
+  	const num = '1024';
+  	const char = "\"";
+  	// 整数、浮点数、二进制数、八进制数、十六进制数
+  	console.log('匹配所有 Number 直接量 整数 isNumber('+ num + ') --> ' + isNumber(num));
+  	console.log('匹配所有 Number 直接量 浮点数 isNumber('+ -0.1024 + ') --> ' + isNumber(-0.1024));
+  	console.log('匹配所有 Number 直接量 二进制数 isNumber('+ 0x011011 + ') --> ' + isNumber(0x011011));
+  	console.log('匹配所有 Number 直接量 十六进制数 isNumber('+ 0xFF + ') --> ' + isNumber(0xFF));
+  	// 字符
+  	console.log('匹配所有的字符串直接量，单引号 isChar(' + char + ') --> ' + isChar(char));
+  	console.log('匹配所有的字符串直接量，汉字 isChar(' + '汉字' + ') --> ' + isChar('汉字'));
+  	// UTF8 
   	console.log('实现UTF-8编码 utf8Encoding(' + str + ') --> ' + utf8Encoding(str));
   	// console.log('使用TextEncoder编码 utf8Encoding(str) --> ' + encoderUTF8(str));
 
@@ -55,7 +59,7 @@
 		if (!str) {
 			return false;
 		}
-		let reg = /[\u0021-\u007E]{6,16}|[\x21-\x7E]{6,16}|(['"])(?:(?!\1).)*?\1/;
+		let reg = /^[\u4E00-\u9FA5A-Za-z]+$|['"]/;
 		return reg.test(str);
 	}
 
@@ -64,7 +68,7 @@
 		if (!str) {
 			return false;
 		}
-		let reg = /^[+-]?([0-9]*\.?[0-9]+|[0-9]+\.?[0-9]*)([eE][+-]?[0-9]+)?|([01]+)|([0-7])|(^0x[a-f0-9]{1,2}$)|(^0X[A-F0-9]{1,2}$)|(^[A-F0-9]{1,2}$)|(^[a-f0-9]{1,2}$)/;
+		let reg = /^(\-|\+)?(.\d+|(0|[1-9]\d*).?\d*?)([eE][-+]?\d+)?$|^0[bB][01]+$|^0[oO][0-7]+$|^0[xX][0-9a-fA-F]+$/;
 		return reg.test(str);
 	
 	}
