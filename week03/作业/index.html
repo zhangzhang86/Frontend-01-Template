@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Week 03 Home Work</title>
+  <script>
+  	const str = '0xFF';
+  	const num = 1024;
+  	
+  	console.log('convertStringToNumber(str) --> ' + convertStringToNumber(str));
+  	console.log('convertNumberToString(num) --> ' + convertNumberToString(num));
+  	
+  	function convertStringToNumber(string, x) {
+	   if (arguments.length < 2) {
+	      x = 10
+	   }
+
+	   var sign = 1
+	   var number = 0
+	   var i = 0
+
+	   var chars = string.split('')
+	   if (chars[0] !== '0') {
+	      if (chars[0] == '-') {
+	         chars.shift()
+	         sign = -1
+	      }
+
+	      while (i < chars.length && chars[i] != '.') {
+	         number = number * x
+	         number += chars[i].codePointAt(0) - '0'.codePointAt(0)
+	         console.log(number)
+	         i++
+	      }
+	      if (chars[i] == '.') {
+	         i++
+	         var fraction = 1
+	         while (i < chars.length && chars[i] != 'e' && chars[i] != 'E') {
+	            fraction = fraction / x
+	            number += (chars[i].codePointAt(0) - '0'.codePointAt(0)) * fraction
+	            i++
+	         }
+	      }
+
+	      if (chars[i] == 'e' || chars[i] == 'E') {
+	         i++
+	         var exponent = 0
+	         while (i < chars.length) {
+	            exponent = exponent * 10
+	            exponent += chars[i].codePointAt(0) - '0'.codePointAt(0)
+	            i++
+	         }
+	         number = number * Math.pow(10, exponent)
+	      }
+	   } else {
+	      chars.shift()
+	      if (chars[0] == 'b' || chars[0] == 'B') {
+	         chars.shift()
+	         chars.reverse()
+	         while (i < chars.length) {
+	            number +=
+	               (chars[i].codePointAt(0) - '0'.codePointAt(0)) * Math.pow(2, i)
+	            i++
+	         }
+	      } else if (chars[0] == 'o' || chars[0] == 'O') {
+	         chars.shift()
+	         chars.reverse()
+	         while (i < chars.length) {
+	            number +=
+	               (chars[i].codePointAt(0) - '0'.codePointAt(0)) * Math.pow(8, i)
+	            i++
+	         }
+	      } else if (chars[0] == 'x' || chars[0] == 'X') {
+	         chars.shift()
+	         chars.reverse()
+	         while (i < chars.length) {
+	            if (/^\d$/.test(chars[i])) {
+	               number +=
+	                  (chars[i].codePointAt(0) - '0'.codePointAt(0)) * Math.pow(16, i)
+	               i++
+	            } else if (chars[i] == 'A' || chars[i] == 'a') {
+	               number += 10 * Math.pow(16, i)
+	               i++
+	            } else if (chars[i] == 'B' || chars[i] == 'b') {
+	               number += 11 * Math.pow(16, i)
+	               i++
+	            } else if (chars[i] == 'C' || chars[i] == 'c') {
+	               number += 12 * Math.pow(16, i)
+	               i++
+	            } else if (chars[i] == 'D' || chars[i] == 'd') {
+	               number += 13 * Math.pow(16, i)
+	               i++
+	            } else if (chars[i] == 'E' || chars[i] == 'e') {
+	               number += 14 * Math.pow(16, i)
+	               i++
+	            } else if (chars[i] == 'F' || chars[i] == 'f') {
+	               number += 15 * Math.pow(16, i)
+	               i++
+	            }
+	         }
+	      }
+	   }
+
+	   return number * sign
+	}
+
+	function convertNumberToString(number, accuracy) {
+	   var x = 10
+	   var sign = ''
+	   var integer = Math.floor(number)
+	   var fraction = (number - integer).toFixed(accuracy)
+	   if (integer < 0) {
+	     sign = '-'
+	     integer = Math.abs(integer)
+	     if (fraction > 0) {
+	       integer = integer - 1
+	       fraction = 1 - fraction
+	     }
+	   }
+	 
+	   var string = ''
+	   if (integer == 0) {
+	     string += '0'
+	   }
+	   while (integer > 0) {
+	     string = String(integer % x) + string
+	     integer = Math.floor(integer / x)
+	   }
+	 
+	   if (fraction > 0) {
+	     string = string + '.'
+	   }
+	   while (fraction > 0) {
+	     string = string + Math.floor(fraction * x)
+	     fraction = (fraction * x - Math.floor(fraction * x)).toFixed(accuracy)
+	   }
+	   return sign + string
+	 }
+  </script>
+</head>
+
+<body>
+  <div>
+  	Week 03 Home Work
+  </div>
+</body>
+
+</html>
